@@ -76,17 +76,19 @@ function create_tag_float(parent_win)
 end
 
 function M.display_buffertags()
-    local cur_win = vim.api.nvim_get_current_win()
-    local wins_to_tag = {}
-    M.remove_buffertags()
-    for _, w in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-        if w ~= cur_win then
-            table.insert(wins_to_tag, w)
+    vim.schedule(function()
+        local cur_win = vim.api.nvim_get_current_win()
+        local wins_to_tag = {}
+        M.remove_buffertags()
+        for _, w in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            if w ~= cur_win then
+                table.insert(wins_to_tag, w)
+            end
         end
-    end
-    for _, w in ipairs(wins_to_tag) do
-        create_tag_float(w)
-    end
+        for _, w in ipairs(wins_to_tag) do
+            create_tag_float(w)
+        end
+    end)
 end
 
 function M.remove_buffertags()
